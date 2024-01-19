@@ -1,0 +1,148 @@
+{
+  "log": {
+    "loglevel": "info"
+  },
+  "routing": {
+    "rules": [],
+    "domainStrategy": "AsIs"
+  },
+  "inbounds": [
+    {
+      "port": 2011,
+      "tag": "ss",
+      "protocol": "shadowsocks",
+      "settings": {
+        "method": "2022-blake3-aes-128-gcm",
+        "password": "aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb",
+        "network": "tcp,udp"
+      }
+    },
+    {
+      "port": 143,
+      "protocol": "vless",
+      "tag": "vless_tls",
+      "settings": {
+        "clients":
+	 [
+          {
+            "id": "7957c33c-d9ca-11ed-afa1-0242ac120002",
+            "email": "user1@myserver-ok",
+            "flow": "xtls-rprx-vision"
+	  },
+
+	  {
+	    "id": "f3de8978-6c9d-4f01-8c14-d440bef6a7f2",
+            "email": "user2@myserver-ok",
+            "flow": "xtls-rprx-vision"
+	  },
+
+          {
+            "id": "25586659-f7a2-4aa8-b4fb-1ec534171240",
+            "email": "dota2",
+            "flow": "xtls-rprx-vision"
+          },
+
+          {
+            "id": "5bab44ed-4097-4a02-bc36-2b81c2b86c00",
+            "email": "Z.D.D-ok",
+            "flow": "xtls-rprx-vision"
+          },
+
+          {
+            "id": "dc5ba152-d457-4397-bbbd-7be0c99aa4d3",
+            "email": "Z.D.D-2-ok",
+            "flow": "xtls-rprx-vision"
+          },
+
+          {
+            "id": "28267319-4ee8-40c2-81d6-b32f3abfab2e",
+            "tg-id": "test_2",
+            "flow": "xtls-rprx-vision"
+          },
+
+          {
+            "id": "2544c179-ea31-4800-929f-64b6ecb36527",
+            "tg-id": "kent-Z.D.D-2-ok",
+            "flow": "xtls-rprx-vision"
+          },
+
+          {
+            "id": "88b6d83b-de9b-4f74-afca-fe42c3b40ff9",
+            "tg-id": "wife-kent-Z.D.D-2-ok",
+            "flow": "xtls-rprx-vision"
+          },
+
+          {
+            "id": "682b8455-9509-4a98-b1d4-6de9860eea34",
+            "tg-id": "python-test",
+            "flow": "xtls-rprx-vision"
+          }
+        ],
+        "decryption": "none",
+        "fallbacks": [
+          {
+            "path": "/myverysecretpath",
+            "dest": "@vless-ws"
+          },
+          {
+            "dest": "8080"
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "tls",
+        "tlsSettings": {
+          "alpn": [
+            "http/1.1",
+            "h2"
+          ],
+          "certificates": [
+            {
+              "certificateFile": "/etc/letsencrypt/live/vpn-test.ru/fullchain.pem",
+              "keyFile": "/etc/letsencrypt/live/vpn-test.ru/privkey.pem"
+            }
+          ]
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ]
+      }
+    },
+    {
+      "listen": "@vless-ws",
+      "protocol": "vless",
+      "tag": "vless_ws",
+      "settings": {
+        "clients": [
+          {
+            "id": "7957c33c-d9ca-11ed-afa1-0242ac120002",
+            "email": "user2@myserver"
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "path": "/myverysecretpath"
+        }
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "tag": "direct"
+    },
+    {
+      "protocol": "blackhole",
+      "tag": "block"
+    }
+  ]
+}

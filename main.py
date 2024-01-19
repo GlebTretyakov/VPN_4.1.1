@@ -6,6 +6,7 @@ from core.settings import settings
 from aiogram import F
 from core.keyboards.comands import start_commands
 from core.handlers.main_menu_callback import show_profile, router_main_menu_callback
+from core.handlers.buy_subscribe_callback import test_show, router_subscribe_callback
 
 
 async def start_bot(bot: Bot):
@@ -23,6 +24,7 @@ async def start():
     dp.startup.register(start_bot)
     dp.shutdown.register(stop_bot)
     dp.include_router(router_main_menu_callback)
+    dp.include_router(router_subscribe_callback)
     dp.message.register(main_menu_keyboard, F.text == "/start")
     try:
         await dp.start_polling(bot)
